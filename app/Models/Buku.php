@@ -28,4 +28,8 @@ class Buku extends Model
              });
         }); 
     }
+
+    public function peminjamans() {
+        return $this->hasMany(Peminjaman::class);
+    }
 }

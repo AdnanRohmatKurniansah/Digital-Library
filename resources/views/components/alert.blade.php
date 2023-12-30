@@ -45,7 +45,7 @@
 		})
     </script>
 @endif
-@if(Session::has('update'))
+@if(Session::has('info'))
     <script>
         const Toast = Swal.mixin({
 		toast: true,
@@ -65,7 +65,7 @@
 
 		Toast.fire({
 		icon: 'success',
-		title: '{{ session("update") }}'
+		title: '{{ session("info") }}'
 		})
     </script>
 @endif

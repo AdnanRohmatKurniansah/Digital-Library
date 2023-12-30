@@ -11,7 +11,7 @@
             <div class="col-md-4 d-flex">
                 <form action="/buku" class="d-flex mt-5">
                     <div class="form-group  me-2">
-                        <input placeholder="Search..." value="{{ request('search') }}" type="text" class="form-control" name="search" required>
+                        <input placeholder="Search..." value="{{ request('search') }}" type="text" class="form-control" name="search">
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-dark text-white">Submit</button>

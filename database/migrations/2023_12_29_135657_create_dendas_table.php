@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peminjamen', function (Blueprint $table) {
+        Schema::create('dendas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_peminjaman')->constrained('peminjamen')->onDelete('cascade');
+            $table->decimal('nominal');
+            $table->decimal('dibayar')->nullable();
+            $table->enum('status', ['lunas', 'blm-lunas'])->default('blm-lunas');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peminjamen');
+        Schema::dropIfExists('dendas');
     }
 };

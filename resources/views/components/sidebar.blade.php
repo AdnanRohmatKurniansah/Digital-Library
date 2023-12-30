@@ -20,5 +20,7 @@
         @if (Auth::user()->role == 'administrator')
           <li class="{{ Request::is('dashboard/user*') ? 'active' : '' }}"><a class="nav-link" href="/dashboard/user"><i class="fas fa-user"></i> <span>Data user</span></a></li>
         @endif
+        <li class="{{ Request::is('dashboard/peminjaman*') ? 'active' : '' }}"><a class="nav-link" href="/dashboard/peminjaman"><i class="fas fa-bookmark"></i> <span>Data peminjaman</span></a></li>
+        <li class="{{ Request::is('dashboard/denda*') ? 'active' : '' }}"><a class="nav-link" href="/dashboard/denda"><i class="fas fa-money-check"></i> <span>Data denda</span></a></li>
       </ul>
   </div>

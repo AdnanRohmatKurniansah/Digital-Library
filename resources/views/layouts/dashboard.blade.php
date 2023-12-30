@@ -89,6 +89,7 @@
   
   
   <!-- Page Specific JS File -->
+  <script src="/assets/js/page/bootstrap-modal.js"></script>
   <script src="/assets/js/page/modules-datatables.js"></script>
   <script src="/assets/js/page/index-0.js"></script>
   <script src="/assets/js/page/forms-advanced-forms.js"></script>

@@ -46,4 +46,8 @@ class User extends Authenticatable
     public function koleksis() {
         return $this->hasMany(Koleksi::class);
     }
+
+    public function peminjamans() {
+        return $this->hasMany(Peminjaman::class);
+    }
 }

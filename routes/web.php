@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\DendaController;
 use App\Http\Controllers\KategoriBukuController;
 use App\Http\Controllers\KoleksiController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UlasanController;
 use App\Models\Buku;
 use App\Models\Ulasan;
@@ -48,14 +50,22 @@ Route::middleware('auth')->group(function() {
 });
 Route::post('/koleksi', [KoleksiController::class, 'tambahKoleksi']);
 
-Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
+Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/', function() {
         return view('dashboard.index', [
             'title' => 'Dashboard'
         ]);
     });
-    Route::resource('/buku/kategori', KategoriBukuController::class);
-    Route::resource('/buku', BukuController::class);
+    Route::middleware('admin')->group(function() {
+        Route::resource('/buku/kategori', KategoriBukuController::class);
+        Route::resource('/buku', BukuController::class);
+        Route::get('/peminjaman', [PeminjamanController::class, 'index']);
+        Route::get('/peminjaman/pinjam', [PeminjamanController::class, 'pinjam']);
+        Route::post('/peminjaman', [PeminjamanController::class, 'pinjamStore']);
+        Route::put('/peminjaman/{peminjaman}', [PeminjamanController::class, 'kembalikanBuku']);
+        Route::get('/denda', [DendaController::class, 'index']);
+        Route::put('/denda/{denda}', [DendaController::class, 'bayar']);
+    });
     Route::get('/user', [AuthController::class, 'listUser']);
     Route::get('/user/create', [AuthController::class, 'addUser']);
     Route::post('/user', [AuthController::class, 'addUserStore']);

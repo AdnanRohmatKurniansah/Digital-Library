@@ -13,7 +13,7 @@
                 Temukan dunia pengetahuan di ujung jari Anda. Perpustakaan digital kami menawarkan akses instan ke berbagai koleksi, membawa pengalaman membaca ke level berikutnya.
             </p>
             <div class="mx-n2">
-                <a href="#buku" class="btn btn-md btn-dark shadow-sm mx-2 px-lg-8">
+                <a href="/buku" class="btn btn-md btn-dark shadow-sm mx-2 px-lg-8">
                     Jelajahi 
                 </a>
             </div>

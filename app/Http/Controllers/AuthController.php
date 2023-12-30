@@ -76,7 +76,7 @@ class AuthController extends Controller
     public function listUser() {
         return view('dashboard.user.index', [
             'title' => 'User list',
-            'users' => User::orderBy('id', 'desc')->get()
+            'users' => User::where('role', '=', 'petugas')->orderBy('id', 'desc')->get()
         ]);
     }
 

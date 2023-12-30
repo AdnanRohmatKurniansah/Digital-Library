@@ -21,9 +21,13 @@
           <button class="btn bg-transparent border-0 shadow-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ auth()->user()->nama_lengkap }}
           </button>
-          <ul class="dropdown-menu">Home
-            <li><a class="dropdown-item" href="/pinjaman">Pinjaman</a></li>
-            <li><a class="dropdown-item" href="/koleksi">Koleksi</a></li>
+          <ul class="dropdown-menu">
+            @if (auth()->user()->role != 'peminjam')
+              <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+            @else 
+              <li><a class="dropdown-item" href="/pinjaman">Pinjaman</a></li>
+              <li><a class="dropdown-item" href="/koleksi">Koleksi</a></li>
+            @endif
             <li><form action="/auth/logout" method="post">
               @csrf
               <button type="submit" class="dropdown-item">
