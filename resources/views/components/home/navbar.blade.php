@@ -25,6 +25,7 @@
             @if (auth()->user()->role != 'peminjam')
               <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
             @else 
+              <li><a class="dropdown-item" href="/denda">Denda</a></li>
               <li><a class="dropdown-item" href="/pinjaman">Pinjaman</a></li>
               <li><a class="dropdown-item" href="/koleksi">Koleksi</a></li>
             @endif

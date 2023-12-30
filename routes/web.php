@@ -8,8 +8,10 @@ use App\Http\Controllers\KoleksiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UlasanController;
 use App\Models\Buku;
+use App\Models\Denda;
 use App\Models\Peminjaman;
 use App\Models\Ulasan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -46,13 +48,39 @@ Route::get('/buku/{buku}', function(Buku $buku) {
 });
 
 Route::post('/ulasan', [UlasanController::class, 'beriUlasan']);
+
+Route::middleware(['guest'])->prefix('auth')->group(function() {
+    Route::get('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'auth']);
+    Route::get('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'store']);
+});
+
 Route::middleware('auth')->group(function() {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/koleksi', [KoleksiController::class, 'koleksi']);
     Route::delete('/koleksi/{koleksi}', [KoleksiController::class, 'hapusKoleksi']);
+    Route::get('/pinjaman', function() {
+        $id_user = Auth::user()->id;
+        return view('pinjaman', [
+            'title' => 'Pinjaman',
+            'pinjamans' => Peminjaman::where('id_user', $id_user)->where('status', '=', 'dipinjam')->paginate(20)
+        ]);
+    });
+    Route::get('/denda', function() {
+        $user = Auth::user();
+        $dendas = Denda::whereHas('peminjaman', function($query) use ($user) {
+            $query->where('id_user', $user->id);
+        })->paginate(20);
+        return view('denda', [
+            'title' => 'Denda',
+            'dendas' => $dendas
+        ]);
+    });
 });
 Route::post('/koleksi', [KoleksiController::class, 'tambahKoleksi']);
 
-Route::middleware('auth')->prefix('dashboard')->group(function () {
+Route::middleware(['auth', 'notPeminjam'])->prefix('dashboard')->group(function () {
     Route::get('/', function() {
         return view('dashboard.index', [
             'title' => 'Dashboard',
@@ -77,14 +105,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/denda', [DendaController::class, 'index']);
     Route::put('/denda/{denda}', [DendaController::class, 'bayar']);
 });
-
-Route::middleware(['guest'])->prefix('auth')->group(function() {
-    Route::get('/login', [AuthController::class, 'login']);
-    Route::post('/login', [AuthController::class, 'auth']);
-    Route::get('/register', [AuthController::class, 'register']);
-    Route::post('/register', [AuthController::class, 'store']);
-});
-
-Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 
