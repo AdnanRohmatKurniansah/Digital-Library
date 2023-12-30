@@ -8,7 +8,9 @@ use App\Http\Controllers\KoleksiController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UlasanController;
 use App\Models\Buku;
+use App\Models\Peminjaman;
 use App\Models\Ulasan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,23 +55,27 @@ Route::post('/koleksi', [KoleksiController::class, 'tambahKoleksi']);
 Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::get('/', function() {
         return view('dashboard.index', [
-            'title' => 'Dashboard'
+            'title' => 'Dashboard',
+            'peminjamans' => Peminjaman::select(DB::raw('DATE_FORMAT(updated_at, "%M") AS date'), DB::raw('COUNT(*) AS count'))
+            ->groupBy(DB::raw('DATE_FORMAT(updated_at, "%M")'))
+            ->orderBy(DB::raw('DATE_FORMAT(updated_at, "%M")'))
+            ->get()
         ]);
     });
     Route::middleware('admin')->group(function() {
-        Route::resource('/buku/kategori', KategoriBukuController::class);
-        Route::resource('/buku', BukuController::class);
-        Route::get('/peminjaman', [PeminjamanController::class, 'index']);
-        Route::get('/peminjaman/pinjam', [PeminjamanController::class, 'pinjam']);
-        Route::post('/peminjaman', [PeminjamanController::class, 'pinjamStore']);
-        Route::put('/peminjaman/{peminjaman}', [PeminjamanController::class, 'kembalikanBuku']);
-        Route::get('/denda', [DendaController::class, 'index']);
-        Route::put('/denda/{denda}', [DendaController::class, 'bayar']);
+        Route::get('/user', [AuthController::class, 'listUser']);
+        Route::get('/user/create', [AuthController::class, 'addUser']);
+        Route::post('/user', [AuthController::class, 'addUserStore']);
+        Route::delete('/user/{user}', [AuthController::class, 'deleteUser']);
     });
-    Route::get('/user', [AuthController::class, 'listUser']);
-    Route::get('/user/create', [AuthController::class, 'addUser']);
-    Route::post('/user', [AuthController::class, 'addUserStore']);
-    Route::delete('/user/{user}', [AuthController::class, 'deleteUser']);
+    Route::resource('/buku/kategori', KategoriBukuController::class);
+    Route::resource('/buku', BukuController::class);
+    Route::get('/peminjaman', [PeminjamanController::class, 'index']);
+    Route::get('/peminjaman/pinjam', [PeminjamanController::class, 'pinjam']);
+    Route::post('/peminjaman', [PeminjamanController::class, 'pinjamStore']);
+    Route::put('/peminjaman/{peminjaman}', [PeminjamanController::class, 'kembalikanBuku']);
+    Route::get('/denda', [DendaController::class, 'index']);
+    Route::put('/denda/{denda}', [DendaController::class, 'bayar']);
 });
 
 Route::middleware(['guest'])->prefix('auth')->group(function() {

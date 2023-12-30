@@ -72,7 +72,7 @@
   <script src="/assets/modules/jquery-ui/jquery-ui.min.js"></script>
 
   <script src="/assets/modules/simple-weather/jquery.simpleWeather.min.js"></script>
-  <script src="/assets/modules/chart.min.js"></script>
+  <script src="/assets/modules/chart.min.js?v=3"></script>
   <script src="/assets/modules/jqvmap/dist/jquery.vmap.min.js"></script>
   <script src="/assets/modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
   <script src="/assets/modules/summernote/summernote-bs4.js"></script>
